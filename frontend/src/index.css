@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply text-ink-900 font-sans antialiased transition-colors duration-300;
+    background-color: #faf9f6;
+  }
+  .dark body {
+    @apply bg-ink-950 text-ink-100;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  /* Glass surfaces */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/60;
+  }
+  .dark .glass {
+    @apply bg-ink-900/70 backdrop-blur-xl border border-white/10;
+  }
+  .glass-dark {
+    @apply bg-ink-900/70 backdrop-blur-xl border border-white/10;
+  }
+
+  /* Card surfaces */
+  .card-surface {
+    @apply bg-white rounded-2xl border border-ink-100 shadow-sm;
+  }
+  .dark .card-surface {
+    @apply bg-ink-900 border-ink-800 shadow-lg shadow-black/20;
+  }
+
+  /* Premium elevated card */
+  .card-elevated {
+    @apply bg-white rounded-2xl border border-ink-100 shadow-md shadow-ink-900/5;
+  }
+  .dark .card-elevated {
+    @apply bg-ink-900 border-ink-800 shadow-xl shadow-black/40;
+  }
+
+  /* Layered surface */
+  .surface-layered {
+    @apply bg-white border border-ink-100;
+  }
+  .dark .surface-layered {
+    @apply bg-ink-900/80 border-ink-800;
+  }
+
+  /* Subtle surface for inset panels */
+  .surface-subtle {
+    @apply bg-ink-50 rounded-xl border border-ink-200;
+  }
+  .dark .surface-subtle {
+    @apply bg-ink-950/60 border-ink-800 rounded-xl;
+  }
+
+  .skeleton {
+    @apply bg-gradient-to-r from-ink-100 via-ink-200 to-ink-100 bg-[length:1000px_100%] animate-shimmer;
+  }
+  .dark .skeleton {
+    @apply bg-gradient-to-r from-ink-800 via-ink-700 to-ink-800 bg-[length:1000px_100%];
+  }
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-teal-500;
+  }
+  .dark .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-teal-400;
+  }
+
+  /* Hero gradient — warm ivory with green/teal/amber radial */
+  .gradient-hero {
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(47, 157, 94, 0.12), transparent),
+                radial-gradient(ellipse 60% 50% at 90% 20%, rgba(245, 158, 11, 0.08), transparent),
+                radial-gradient(ellipse 50% 40% at 10% 80%, rgba(20, 184, 166, 0.06), transparent),
+                linear-gradient(to bottom, #faf9f6, #ffffff);
+  }
+  .dark .gradient-hero {
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(47, 157, 94, 0.15), transparent),
+                radial-gradient(ellipse 60% 50% at 90% 20%, rgba(20, 184, 166, 0.08), transparent),
+                radial-gradient(ellipse 50% 40% at 10% 80%, rgba(245, 158, 11, 0.05), transparent),
+                linear-gradient(to bottom, #0a1a12, #0d1f15);
+  }
+
+  /* Dark gradient for admin / CTAs */
+  .gradient-dark {
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(47, 157, 94, 0.25), transparent),
+                radial-gradient(ellipse 60% 50% at 90% 20%, rgba(20, 184, 166, 0.12), transparent),
+                linear-gradient(to bottom, #0a2618, #13432b);
+  }
+
+  /* Forest gradient */
+  .gradient-forest {
+    background: linear-gradient(135deg, #1a673d, #13432b);
+  }
+  .dark .gradient-forest {
+    background: linear-gradient(135deg, #175233, #0a2618);
+  }
+
+  /* AI indicator glow */
+  .ai-glow {
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.15);
+  }
+  .dark .ai-glow {
+    box-shadow: 0 0 24px rgba(20, 184, 166, 0.2);
+  }
+
+  /* Live status pulse ring */
+  .live-pulse {
+    @apply relative;
+  }
+  .live-pulse::before {
+    content: '';
+    @apply absolute inset-0 rounded-full animate-ripple;
+    background: currentColor;
+    opacity: 0.3;
+  }
+
+  /* Agricultural contour pattern — VERY subtle */
+  .pattern-contour {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 Q15 20 30 30 T60 30' stroke='%231f8049' stroke-opacity='0.03' fill='none' stroke-width='1'/%3E%3Cpath d='M0 45 Q15 35 30 45 T60 45' stroke='%231f8049' stroke-opacity='0.03' fill='none' stroke-width='1'/%3E%3C/svg%3E");
+  }
+  .dark .pattern-contour {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 Q15 20 30 30 T60 30' stroke='%232dd4bf' stroke-opacity='0.04' fill='none' stroke-width='1'/%3E%3Cpath d='M0 45 Q15 35 30 45 T60 45' stroke='%232dd4bf' stroke-opacity='0.04' fill='none' stroke-width='1'/%3E%3C/svg%3E");
+  }
+
+  /* Field grid pattern */
+  .pattern-field {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L40 40M40 0L0 40' stroke='%231f8049' stroke-opacity='0.02' stroke-width='1'/%3E%3C/svg%3E");
+  }
+  .dark .pattern-field {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L40 40M40 0L0 40' stroke='%234ade80' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E");
+  }
+
+  /* Data flow lines */
+  .pattern-data-flow {
+    background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60 Q30 40 60 60 T120 60' stroke='%2314b8a6' stroke-opacity='0.04' fill='none' stroke-width='1' stroke-dasharray='4 4'/%3E%3C/svg%3E");
+  }
+  .dark .pattern-data-flow {
+    background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60 Q30 40 60 60 T120 60' stroke='%232dd4bf' stroke-opacity='0.06' fill='none' stroke-width='1' stroke-dasharray='4 4'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.ink.300') transparent;
+  }
+  .dark .scrollbar-thin {
+    scrollbar-color: theme('colors.ink.700') transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-ink-300 rounded-full;
+  }
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-ink-700 rounded-full;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
