@@ -11,6 +11,11 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/sih_farmer_procurement"
 
+    # Authentication. Set M5_JWT_SECRET_KEY in production.
+    JWT_SECRET_KEY: str = ""
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+
     # Recommendation scoring weights (must sum to 1.0)
     SCORE_WEIGHTS: Dict[str, float] = {
         "wait_time": 0.40,
