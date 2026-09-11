@@ -1,5 +1,11 @@
 from fastapi import FastAPI
+
 from app.routes.recommendations import router as recommendations_router
+from app.routes.slots import router as slots_router
+from app.routes.tokens import router as tokens_router
+from app.routes.queue import router as queue_router
+from app.routes.queue_ws import router as queue_ws_router
+
 from app.core.config import settings
 
 app = FastAPI(
@@ -13,6 +19,10 @@ app = FastAPI(
 )
 
 app.include_router(recommendations_router)
+app.include_router(slots_router)
+app.include_router(tokens_router)
+app.include_router(queue_router)
+app.include_router(queue_ws_router)
 
 
 @app.get("/health", tags=["Health"])
