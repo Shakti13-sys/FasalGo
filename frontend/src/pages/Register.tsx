@@ -1,56 +1,84 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, User, Phone, Lock, MapPin, Package } from 'lucide-react';
+import { ArrowRight, User, Phone, Lock, MapPin, Package, Sparkles } from 'lucide-react';
 import { register as registerService } from '@/services/authService';
 import { useApp } from '@/context/AppContext';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Logo } from '@/components/ui/Logo';
 
-const states = ['Rajasthan', 'Punjab', 'Haryana', 'Uttar Pradesh', 'Madhya Pradesh', 'Maharashtra', 'Gujarat'];
+const states = ['Maharashtra', 'Rajasthan', 'Punjab', 'Haryana', 'Uttar Pradesh', 'Madhya Pradesh', 'Gujarat'];
 const districts: Record<string, string[]> = {
+  Maharashtra: ['Nashik', 'Pune', 'Nagpur', 'Aurangabad', 'Solapur'],
   Rajasthan: ['Jaipur', 'Jodhpur', 'Kota', 'Udaipur', 'Ajmer'],
   Punjab: ['Ludhiana', 'Amritsar', 'Patiala', 'Bathinda'],
   Haryana: ['Hisar', 'Karnal', 'Rohtak', 'Gurugram'],
   'Uttar Pradesh': ['Agra', 'Aligarh', 'Meerut', 'Varanasi'],
   'Madhya Pradesh': ['Bhopal', 'Indore', 'Gwalior', 'Jabalpur'],
-  Maharashtra: ['Pune', 'Nashik', 'Nagpur', 'Aurangabad'],
   Gujarat: ['Ahmedabad', 'Surat', 'Rajkot', 'Vadodara'],
 };
 const crops = ['Wheat', 'Rice', 'Mustard', 'Soybean', 'Maize', 'Cotton', 'Bajra', 'Gram'];
 
 export default function Register() {
   const navigate = useNavigate();
-  const { login } = useApp();
+  const { login, showToast } = useApp();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: '',
-    mobile: '',
-    password: '',
-    location: '',
-    state: '',
-    district: '',
-    crop: '',
-    expectedQuantity: 0,
+    name: 'Ramesh Patel',
+    mobile: '9811223344',
+    password: 'farmerpassword123',
+    location: 'Chomu Mandi Area',
+    state: 'Rajasthan',
+    district: 'Jaipur',
+    crop: 'Wheat',
+    expectedQuantity: 85,
   });
 
   const update = (key: string, value: string | number) => setForm((p) => ({ ...p, [key]: value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.name.trim() || !form.mobile.trim() || !form.password) {
+      showToast('warning', 'Please fill in Name, Mobile Number, and Password.');
+      return;
+    }
     setLoading(true);
-    const farmer = await registerService(form);
-    login(farmer);
-    setLoading(false);
-    navigate('/dashboard');
+    try {
+      const result = await registerService(form);
+      login(result.farmer);
+      showToast('success', `Account created successfully! Welcome, ${result.farmer.name}.`);
+      navigate('/dashboard');
+    } catch (err: any) {
+      showToast('error', err.message || 'Registration failed. Mobile may already be registered.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFillRandom = () => {
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    setForm({
+      name: `Kisan Sharma ${rand}`,
+      mobile: `98${rand}${rand}`,
+      password: 'password123',
+      location: 'Dausa Village',
+      state: 'Rajasthan',
+      district: 'Jaipur',
+      crop: 'Mustard',
+      expectedQuantity: 120,
+    });
   };
 
   return (
     <div className="min-h-screen flex lg:grid lg:grid-cols-2">
       {/* Left visual */}
-      <div className="hidden lg:block relative bg-gradient-to-br from-emerald-950 via-emerald-900 to-green-900 text-white pattern-contour overflow-hidden">
-        {/* Subtle glow */}
-        <div className="absolute -top-20 -left-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="hidden lg:block relative bg-emerald-950 text-white overflow-hidden">
+        <img
+          src="/images/farmer_hero_mandi.jpg"
+          alt="Smart APMC Mandi Procurement"
+          className="absolute inset-0 w-full h-full object-cover opacity-35 filter saturate-125"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/70 to-emerald-950/40" />
 
         <div className="absolute inset-0 flex flex-col justify-between p-12 relative z-10">
           <div className="flex items-center justify-between">
@@ -60,13 +88,13 @@ export default function Register() {
           <div>
             <h2 className="text-4xl font-display font-bold text-white leading-tight">
               Join the <br />
-              <span className="text-emerald-400">smart farming</span> revolution.
+              <span className="text-emerald-400">Smart Procurement</span> Platform.
             </h2>
             <p className="mt-4 text-emerald-100 max-w-md text-base leading-relaxed">
-              Create your account to get AI-powered procurement recommendations and real-time queue tracking.
+              Create your farmer account to receive AI-powered slot recommendations, transparent wait times, and instant queue alerts.
             </p>
           </div>
-          <p className="text-emerald-200/60 text-sm">SIH26032 — Smart Procurement Platform</p>
+          <p className="text-emerald-200/60 text-sm">SIH26032 — Smart Procurement & Queue Intelligence</p>
         </div>
       </div>
 
@@ -84,14 +112,23 @@ export default function Register() {
             <Logo size="md" showText />
           </Link>
 
-          <h1 className="text-3xl font-display font-bold text-ink-900 dark:text-white mb-2">Create Account</h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-3xl font-display font-bold text-ink-900 dark:text-white">Create Account</h1>
+            <button
+              type="button"
+              onClick={handleFillRandom}
+              className="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-primary-300 dark:border-primary-700 bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300 hover:bg-primary-100 flex items-center gap-1 cursor-pointer"
+            >
+              <Sparkles className="w-3 h-3" /> Auto-fill New
+            </button>
+          </div>
           <p className="text-ink-500 dark:text-ink-400 mb-6">Register to start your smart procurement journey</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Field icon={User} label="Full Name" placeholder="Rajesh Kumar" value={form.name} onChange={(v) => update('name', v)} />
-            <Field icon={Phone} label="Mobile Number" placeholder="98765 43210" value={form.mobile} onChange={(v) => update('mobile', v)} type="tel" />
+            <Field icon={Phone} label="Mobile Number" placeholder="9876543210" value={form.mobile} onChange={(v) => update('mobile', v)} type="tel" />
             <Field icon={Lock} label="Password" placeholder="Create a password" value={form.password} onChange={(v) => update('password', v)} type="password" />
-            <Field icon={MapPin} label="Location / Village" placeholder="Shahpura" value={form.location} onChange={(v) => update('location', v)} />
+            <Field icon={MapPin} label="Location / Village" placeholder="Panchavati, Nashik" value={form.location} onChange={(v) => update('location', v)} />
 
             <div className="grid grid-cols-2 gap-4">
               <SelectField label="State" value={form.state} onChange={(v) => update('state', v)} options={states} placeholder="Select state" />
@@ -126,7 +163,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-600 text-white font-semibold py-4 rounded-xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-600/25 disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
+              className="w-full bg-primary-600 text-white font-semibold py-4 rounded-xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-600/25 disabled:opacity-50 flex items-center justify-center gap-2 mt-6 cursor-pointer"
             >
               {loading ? (
                 <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

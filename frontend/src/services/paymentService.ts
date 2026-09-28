@@ -1,9 +1,6 @@
 import type { PaymentInfo } from '@/types';
-import { mockPayment } from '@/data/mockData';
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { apiFetch } from './api';
 
 export async function getPaymentInfo(): Promise<PaymentInfo> {
-  await delay(500);
-  return mockPayment;
+  return await apiFetch<PaymentInfo>('/payment/active');
 }

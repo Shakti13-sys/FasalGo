@@ -1,17 +1,12 @@
 import type { NotificationItem } from '@/types';
-import { mockNotifications } from '@/data/mockData';
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { apiFetch } from './api';
 
 export async function getNotifications(): Promise<NotificationItem[]> {
-  await delay(500);
-  return mockNotifications;
+  return await apiFetch<NotificationItem[]>('/farmers/notifications');
 }
 
-export async function markAsRead(id: string): Promise<void> {
-  await delay(200);
-}
-
-export async function markAllAsRead(): Promise<void> {
-  await delay(300);
+export async function markAllNotificationsRead(): Promise<void> {
+  await apiFetch<void>('/farmers/notifications/read-all', {
+    method: 'POST',
+  });
 }

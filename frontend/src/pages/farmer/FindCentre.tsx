@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Clock, Users, Gauge, Zap, Search, Star, ArrowRight, Navigation } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
-import { Badge, CongestionBadge } from '@/components/ui/Badge';
+import { Badge, CongestionBadge, congestionLabel } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { getCentres } from '@/services/centreService';
 import { useApp } from '@/context/AppContext';
 import type { ProcurementCentre, CongestionLevel } from '@/types';
-import { congestionLabel } from '@/data/mockData';
 
 export default function FindCentre() {
   const { showToast } = useApp();
@@ -20,9 +19,14 @@ export default function FindCentre() {
 
   useEffect(() => {
     (async () => {
-      const cs = await getCentres();
-      setCentres(cs);
-      setLoading(false);
+      try {
+        const cs = await getCentres();
+        setCentres(cs);
+      } catch (err) {
+        console.error('Failed to load centres:', err);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -50,7 +54,7 @@ export default function FindCentre() {
           <MapPin className="w-6 h-6 text-primary-600 dark:text-primary-400" />
           <h1 className="text-2xl font-display font-bold text-ink-900 dark:text-white">Find Procurement Centre</h1>
         </div>
-        <p className="text-ink-500 dark:text-ink-400">Compare centres by distance, queue, wait time, and congestion.</p>
+        <p className="text-ink-500 dark:text-ink-400">Compare centres by distance, live queue, wait time, and congestion.</p>
       </div>
 
       {/* Search & Filters */}

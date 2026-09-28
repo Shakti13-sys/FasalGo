@@ -1,14 +1,13 @@
 import type { Farmer } from '@/types';
-import { mockFarmer } from '@/data/mockData';
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { apiFetch } from './api';
 
 export async function getFarmerProfile(): Promise<Farmer> {
-  await delay(300);
-  return mockFarmer;
+  return await apiFetch<Farmer>('/farmers/me');
 }
 
 export async function updateCrop(crop: string, quantity: number): Promise<Farmer> {
-  await delay(500);
-  return { ...mockFarmer, crop, expectedQuantity: quantity };
+  return await apiFetch<Farmer>('/farmers/me', {
+    method: 'PUT',
+    body: JSON.stringify({ crop, expected_quantity: quantity }),
+  });
 }

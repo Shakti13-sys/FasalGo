@@ -1,7 +1,5 @@
 import type { Token } from '@/types';
-import { mockToken } from '@/data/mockData';
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { apiFetch } from './api';
 
 export async function bookSlot(params: {
   centreId: string;
@@ -11,20 +9,24 @@ export async function bookSlot(params: {
   crop: string;
   quantity: number;
 }): Promise<Token> {
-  await delay(1200);
-  return {
-    ...mockToken,
-    id: 't' + Date.now(),
-    centreId: params.centreId,
-    centreName: params.centreName,
-    date: params.date,
-    time: params.time,
-    crop: params.crop,
-    quantity: params.quantity,
-  };
+  const token = await apiFetch<Token>('/tokens/generate', {
+    method: 'POST',
+    body: JSON.stringify({
+      centre_id: params.centreId,
+      centre_name: params.centreName,
+      date: params.date,
+      time: params.time,
+      crop: params.crop,
+      quantity: params.quantity,
+    }),
+  });
+  return token;
 }
 
-export async function getToken(): Promise<Token> {
-  await delay(400);
-  return mockToken;
+export async function getToken(tokenId: string = 't-init-47'): Promise<Token> {
+  return await apiFetch<Token>(`/tokens/${tokenId}`);
+}
+
+export async function getActiveToken(): Promise<Token> {
+  return await apiFetch<Token>('/tokens/active/me');
 }

@@ -10,8 +10,29 @@ import { bookSlot } from '@/services/slotService';
 import { useApp } from '@/context/AppContext';
 import type { ProcurementCentre } from '@/types';
 
-const dates = ['Today', 'Tomorrow', '7 Sep', '8 Sep'];
+const getUpcomingDates = () => {
+  const result: string[] = ['Today', 'Tomorrow'];
+  const now = new Date();
+  for (let i = 2; i <= 4; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() + i);
+    result.push(d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
+  }
+  return result;
+};
+
+const dates = getUpcomingDates();
 const timeSlots = ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '4:30 PM'];
+
+const MSP_RATES: Record<string, { rate: number; season: string }> = {
+  Wheat: { rate: 2275, season: 'RMS 2024–25 (Govt MSP: ₹2,275/Qtl)' },
+  'Wheat (Sharbati Grade A)': { rate: 2275, season: 'RMS 2024–25 (Govt MSP: ₹2,275/Qtl)' },
+  Mustard: { rate: 5650, season: 'RMS 2024–25 (Govt MSP: ₹5,650/Qtl)' },
+  Gram: { rate: 5440, season: 'RMS 2024–25 (Govt MSP: ₹5,440/Qtl)' },
+  Bajra: { rate: 2500, season: 'KMS 2024–25 (Govt MSP: ₹2,500/Qtl)' },
+  Paddy: { rate: 2183, season: 'KMS 2024–25 (Govt MSP: ₹2,183/Qtl)' },
+  Soybean: { rate: 4600, season: 'KMS 2024–25 (Govt MSP: ₹4,600/Qtl)' },
+};
 
 export default function BookSlot() {
   const { farmer, showToast } = useApp();
@@ -264,6 +285,8 @@ export default function BookSlot() {
                     <Row label="Date" value={selectedDate} />
                     <Row label="Time" value={selectedTime} />
                     <Row label="Crop" value={farmer?.crop || 'Wheat'} />
+                    <Row label="Govt MSP Scheme" value={(MSP_RATES[farmer?.crop || 'Wheat'] || MSP_RATES['Wheat']).season} />
+                    <Row label="Estimated Total Payout" value={`₹${(quantity * (MSP_RATES[farmer?.crop || 'Wheat'] || MSP_RATES['Wheat']).rate).toLocaleString('en-IN')}`} />
                   </div>
 
                   <div>

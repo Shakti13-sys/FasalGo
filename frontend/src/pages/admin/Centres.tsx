@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Building2, Search, Users, Clock, Gauge, ArrowUpDown } from 'lucide-react';
-import { Card } from '@/components/ui/Card';
 import { CongestionBadge } from '@/components/ui/Badge';
 import { getCentres } from '@/services/centreService';
 import type { ProcurementCentre } from '@/types';
-import { congestionLabel } from '@/data/mockData';
 
 type SortKey = 'name' | 'queue' | 'waitTime' | 'congestion';
 
@@ -18,9 +16,14 @@ export default function AdminCentres() {
 
   useEffect(() => {
     (async () => {
-      const cs = await getCentres();
-      setCentres(cs);
-      setLoading(false);
+      try {
+        const cs = await getCentres();
+        setCentres(cs);
+      } catch (err) {
+        console.error('Failed to load centres:', err);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -57,7 +60,7 @@ export default function AdminCentres() {
           <Building2 className="w-6 h-6 text-primary-600 dark:text-primary-400" />
           <h1 className="text-2xl font-display font-bold text-ink-900 dark:text-white">Centre Monitoring</h1>
         </div>
-        <p className="text-ink-500 dark:text-ink-400">Live monitoring of all procurement centres with queue and counter status.</p>
+        <p className="text-ink-500 dark:text-ink-400">Live monitoring of all procurement centres with real-time queue and counter throughput.</p>
       </div>
 
       {/* Search */}
@@ -157,7 +160,7 @@ export default function AdminCentres() {
         <div className="card-surface p-5">
           <p className="text-sm text-ink-500 dark:text-ink-400 mb-1">Avg Wait Time</p>
           <p className="text-2xl font-display font-bold text-ink-900 dark:text-white">
-            {Math.round(centres.reduce((s, c) => s + c.waitTime, 0) / centres.length)} min
+            {Math.round(centres.reduce((s, c) => s + c.waitTime, 0) / (centres.length || 1))} min
           </p>
         </div>
         <div className="card-surface p-5">

@@ -97,6 +97,7 @@ export interface PaymentInfo {
   status: 'pending' | 'completed';
   date: string;
   transactionRef: string;
+  bankAccountHint?: string;
 }
 
 export interface Farmer {

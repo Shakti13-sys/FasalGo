@@ -6,31 +6,46 @@ import {
   Ticket,
   Building2,
   Clock,
-  TrendingUp,
   ArrowRight,
   AlertTriangle,
   Activity,
 } from 'lucide-react';
-import { Card } from '@/components/ui/Card';
-import { Badge, CongestionBadge } from '@/components/ui/Badge';
+import { CongestionBadge } from '@/components/ui/Badge';
 import { AnimatedCounter, ProgressBar } from '@/components/ui';
-import { mockAdminStats, mockBottlenecks } from '@/data/mockData';
+import { getAdminStats, getBottlenecks } from '@/services/aiService';
 import { getCentres } from '@/services/centreService';
-import type { ProcurementCentre } from '@/types';
+import type { ProcurementCentre, AdminStats, Bottleneck } from '@/types';
 
 export default function AdminOverview() {
   const [centres, setCentres] = useState<ProcurementCentre[]>([]);
+  const [stats, setStats] = useState<AdminStats>({
+    totalFarmers: 1240,
+    activeTokens: 186,
+    activeCentres: 5,
+    farmersWaiting: 110,
+    avgWaitingTime: 28,
+  });
+  const [bottlenecks, setBottlenecks] = useState<Bottleneck[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const cs = await getCentres();
-      setCentres(cs);
-      setLoading(false);
+      try {
+        const [cs, st, bt] = await Promise.all([
+          getCentres(),
+          getAdminStats(),
+          getBottlenecks(),
+        ]);
+        setCentres(cs);
+        if (st) setStats(st);
+        if (bt) setBottlenecks(bt);
+      } catch (e) {
+        console.error('Failed to load admin stats:', e);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
-
-  const stats = mockAdminStats;
 
   const statCards = [
     { icon: Users, label: 'Total Farmers', value: stats.totalFarmers, color: 'bg-accent-500', suffix: '' },
@@ -56,11 +71,11 @@ export default function AdminOverview() {
         <div className="flex items-center gap-2 mb-2">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-success-50 dark:bg-success-500/10 border border-success-200 dark:border-success-500/20">
             <span className="w-2 h-2 rounded-full bg-success-500 dark:bg-success-400 animate-pulse" />
-            <span className="text-xs font-bold text-success-700 dark:text-success-300">LIVE</span>
+            <span className="text-xs font-bold text-success-700 dark:text-success-300">LIVE COMMAND CENTER</span>
           </div>
         </div>
         <h1 className="text-2xl font-display font-bold text-ink-900 dark:text-white">Procurement Intelligence Command Center</h1>
-        <p className="text-ink-500 dark:text-ink-400 mt-1">Real-time monitoring across all procurement centres.</p>
+        <p className="text-ink-500 dark:text-ink-400 mt-1">Real-time monitoring across all APMC mandis and procurement centres.</p>
       </div>
 
       {/* Stat Cards */}
@@ -140,7 +155,7 @@ export default function AdminOverview() {
               <h2 className="font-display font-bold text-lg text-ink-900 dark:text-white">Bottleneck Alerts</h2>
             </div>
             <div className="space-y-3">
-              {mockBottlenecks.map((b) => (
+              {bottlenecks.map((b) => (
                 <div key={b.id} className={`p-4 rounded-xl border ${b.severity === 'critical' ? 'border-danger-200 dark:border-danger-500/30 bg-danger-50 dark:bg-danger-500/10' : 'border-warning-200 dark:border-warning-500/30 bg-warning-50 dark:bg-warning-500/10'}`}>
                   <p className="font-bold text-ink-900 dark:text-white text-sm">{b.centreName}</p>
                   <p className="text-xs text-ink-500 dark:text-ink-400 mt-1">Counter #{b.counter} — {b.processingTimeAboveNormal}% above normal</p>
@@ -150,6 +165,9 @@ export default function AdminOverview() {
                   </div>
                 </div>
               ))}
+              {bottlenecks.length === 0 && (
+                <p className="text-sm text-ink-500 dark:text-ink-400">No active bottlenecks detected.</p>
+              )}
             </div>
             <Link to="/admin/bottlenecks" className="mt-4 flex items-center justify-center gap-2 text-sm font-semibold text-primary-700 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300">
               View All Bottlenecks <ArrowRight className="w-4 h-4" />

@@ -1,6 +1,11 @@
 import { type ReactNode } from 'react';
 import type { CongestionLevel } from '@/types';
-import { congestionLabel } from '@/data/mockData';
+
+export const congestionLabel: Record<CongestionLevel, string> = {
+  low: 'Low Congestion',
+  medium: 'Moderate',
+  high: 'Heavy Queue',
+};
 
 interface BadgeProps {
   children: ReactNode;
@@ -43,12 +48,13 @@ const congestionDotMap: Record<CongestionLevel, string> = {
 };
 
 export function CongestionBadge({ level, size = 'sm' }: { level: CongestionLevel; size?: 'sm' | 'md' }) {
+  const safeLevel = (level && congestionBgMap[level]) ? level : 'low';
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border font-semibold ${congestionBgMap[level]} ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-sm'}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border font-semibold ${congestionBgMap[safeLevel]} ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-sm'}`}
     >
-      <span className={`w-2 h-2 rounded-full ${congestionDotMap[level]} animate-pulse`} />
-      {congestionLabel[level]}
+      <span className={`w-2 h-2 rounded-full ${congestionDotMap[safeLevel]} animate-pulse`} />
+      {congestionLabel[safeLevel]}
     </span>
   );
 }

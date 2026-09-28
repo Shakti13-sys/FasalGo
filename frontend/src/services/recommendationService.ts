@@ -1,19 +1,25 @@
-import type { CentreRecommendation, BestTimeSlot } from '@/types';
-import { mockRecommendations, mockBestTime } from '@/data/mockData';
+import type { CentreRecommendation, BestTimeSlot, RerouteSuggestion } from '@/types';
+import { apiFetch } from './api';
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-export async function getRecommendations(): Promise<CentreRecommendation[]> {
-  await delay(900);
-  return mockRecommendations;
+export async function getRecommendations(
+  lat: number = 19.9975,
+  lon: number = 73.7898
+): Promise<CentreRecommendation[]> {
+  return await apiFetch<CentreRecommendation[]>(`/recommendations/centres?lat=${lat}&lon=${lon}`);
 }
 
-export async function getTopRecommendation(): Promise<CentreRecommendation> {
-  await delay(700);
-  return mockRecommendations[0];
+export async function getTopRecommendation(
+  lat: number = 19.9975,
+  lon: number = 73.7898
+): Promise<CentreRecommendation> {
+  const recs = await getRecommendations(lat, lon);
+  return recs[0];
 }
 
-export async function getBestTime(): Promise<BestTimeSlot> {
-  await delay(600);
-  return mockBestTime;
+export async function getBestTime(centreId: string = 'c1'): Promise<BestTimeSlot> {
+  return await apiFetch<BestTimeSlot>(`/recommendations/best-time?centre_id=${centreId}`);
+}
+
+export async function checkRerouteRecommendation(tokenId: string): Promise<any> {
+  return await apiFetch<any>(`/recommendations/reroute/${tokenId}`);
 }

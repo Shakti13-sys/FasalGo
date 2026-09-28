@@ -2,21 +2,30 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Flame, MapPin, Clock, Users, Gauge, Zap, X, Navigation, TrendingUp } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
-import { CongestionBadge } from '@/components/ui/Badge';
+import { CongestionBadge, congestionLabel } from '@/components/ui/Badge';
 import { getCentres } from '@/services/centreService';
-import type { ProcurementCentre, CongestionLevel } from '@/types';
-import { congestionLabel } from '@/data/mockData';
+import { getCongestionForecast } from '@/services/aiService';
+import type { ProcurementCentre, CongestionLevel, QueueForecastPoint } from '@/types';
 
 export default function Heatmap() {
   const [centres, setCentres] = useState<ProcurementCentre[]>([]);
+  const [forecastPoints, setForecastPoints] = useState<QueueForecastPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<ProcurementCentre | null>(null);
 
   useEffect(() => {
     (async () => {
-      const cs = await getCentres();
-      setCentres(cs);
-      setLoading(false);
+      try {
+        const [cs, fc] = await Promise.all([getCentres(), getCongestionForecast('c1')]);
+        setCentres(cs);
+        if (fc && fc.length > 0) {
+          setForecastPoints(fc);
+        }
+      } catch (err) {
+        console.error('Failed to load heatmap:', err);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -30,14 +39,16 @@ export default function Heatmap() {
     high: 'bg-danger-500/60',
   };
 
-  const forecastHours = [
-    { time: 'Now', level: 'medium' as CongestionLevel },
-    { time: '+1h', level: 'high' as CongestionLevel },
-    { time: '+2h', level: 'high' as CongestionLevel },
-    { time: '+3h', level: 'medium' as CongestionLevel },
-    { time: '+4h', level: 'low' as CongestionLevel },
-    { time: '+5h', level: 'low' as CongestionLevel },
-  ];
+  const forecastHours = forecastPoints.length > 0
+    ? forecastPoints.map((p) => ({ time: p.hour, level: (p.level as CongestionLevel) || 'low' }))
+    : [
+        { time: 'Now', level: 'medium' as CongestionLevel },
+        { time: '+1h', level: 'high' as CongestionLevel },
+        { time: '+2h', level: 'high' as CongestionLevel },
+        { time: '+3h', level: 'medium' as CongestionLevel },
+        { time: '+4h', level: 'low' as CongestionLevel },
+        { time: '+5h', level: 'low' as CongestionLevel },
+      ];
 
   return (
     <div className="space-y-6">

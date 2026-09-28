@@ -34,11 +34,12 @@ export default function ProcurementTracking() {
   return (
     <div className="space-y-6">
       <div>
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
           <Truck className="w-6 h-6 text-primary-600 dark:text-primary-400" />
           <h1 className="text-2xl font-display font-bold text-ink-900 dark:text-white">Procurement Tracking</h1>
+          <Badge variant="success" size="sm">Govt MSP Scheme · RMS 2024–25 (₹2,275/Qtl)</Badge>
         </div>
-        <p className="text-ink-500 dark:text-ink-400">Track your crop from booking to payment in real time.</p>
+        <p className="text-ink-500 dark:text-ink-400">Track your crop from booking to direct bank payment in real time.</p>
       </div>
 
       {/* Summary Card */}

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import type { Farmer, NotificationItem } from '@/types';
-import { mockFarmer, mockNotifications } from '@/data/mockData';
+import { getCurrentFarmer, logout as authLogout } from '@/services/authService';
+import { getNotifications, markAllNotificationsRead as markAllReadApi } from '@/services/notificationService';
 
 type ThemeMode = 'light' | 'dark';
 
@@ -68,8 +69,27 @@ const AppContext = createContext<AppState | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [farmer, setFarmer] = useState<Farmer | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationItem[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [toasts, setToasts] = useState<AppState['toasts']>([]);
+
+  // Load user session and notifications on initial mount
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await getCurrentFarmer();
+        if (user) {
+          setFarmer(user);
+          setIsAuthenticated(true);
+        }
+        const notifs = await getNotifications();
+        if (notifs && notifs.length > 0) {
+          setNotifications(notifs);
+        }
+      } catch (err) {
+        console.warn('Initial session check failed:', err);
+      }
+    })();
+  }, []);
 
   const login = useCallback((f: Farmer) => {
     setFarmer(f);
@@ -77,6 +97,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
+    authLogout();
     setFarmer(null);
     setIsAuthenticated(false);
   }, []);
@@ -91,6 +112,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const markAllNotificationsRead = useCallback(() => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    markAllReadApi().catch(console.warn);
   }, []);
 
   const showToast = useCallback((type: 'success' | 'warning' | 'info' | 'error', message: string) => {
@@ -131,5 +153,3 @@ export function useApp() {
   if (!ctx) throw new Error('useApp must be used within AppProvider');
   return ctx;
 }
-
-export { mockFarmer };

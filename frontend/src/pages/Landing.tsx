@@ -17,24 +17,27 @@ import {
   ListOrdered,
   Truck,
   Wallet,
+  CheckCircle2,
+  Scale,
+  FlaskConical,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Logo } from '@/components/ui/Logo';
 
 const journeySteps = [
-  { icon: Sprout, label: 'Farm', sub: 'Start', color: 'from-primary-400 to-primary-600' },
-  { icon: MapPin, label: 'Smart Centre', sub: 'Recommended', color: 'from-teal-400 to-teal-600' },
-  { icon: Ticket, label: 'Slot', sub: 'Booked', color: 'from-secondary-400 to-secondary-600' },
-  { icon: ListOrdered, label: 'Live Queue', sub: 'Token #47', color: 'from-accent-400 to-accent-600' },
-  { icon: Truck, label: 'Procurement', sub: 'Tracking', color: 'from-primary-500 to-teal-500' },
-  { icon: Wallet, label: 'Payment', sub: 'Done', color: 'from-success-400 to-success-600' },
+  { icon: Sprout, label: 'Farm Dispatch', sub: 'Harvest ready', color: 'from-primary-400 to-primary-600' },
+  { icon: MapPin, label: 'Smart Mandi', sub: 'Jaipur APMC Recommended', color: 'from-teal-400 to-teal-600' },
+  { icon: Ticket, label: 'Digital Slot', sub: 'Token #47 Allocated', color: 'from-secondary-400 to-secondary-600' },
+  { icon: ListOrdered, label: 'Live Queue', sub: 'ETA 18 min · 4 Ahead', color: 'from-accent-400 to-accent-600' },
+  { icon: Scale, label: 'Weighbridge & Assay', sub: 'Grade A · 11.2% Moisture', color: 'from-primary-500 to-teal-500' },
+  { icon: Wallet, label: 'DBT Payment', sub: '₹1,93,375 (Govt MSP)', color: 'from-success-400 to-success-600' },
 ];
 
 export default function Landing() {
   return (
     <div className="min-h-screen gradient-hero">
       {/* Nav */}
-      <nav className="sticky top-0 z-40 bg-white/70 dark:bg-ink-950/70 backdrop-blur-xl border-b border-white/60 dark:border-ink-800">
+      <nav className="sticky top-0 z-40 bg-white/80 dark:bg-ink-950/80 backdrop-blur-xl border-b border-white/60 dark:border-ink-800">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
           <Logo size="md" showText />
           <div className="flex items-center gap-2">
@@ -56,7 +59,7 @@ export default function Landing() {
       </nav>
 
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-4 lg:px-8 pt-12 lg:pt-20 pb-16">
+      <section className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 lg:pt-16 pb-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -65,22 +68,24 @@ export default function Landing() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 dark:bg-primary-950/50 border border-primary-200 dark:border-primary-900 mb-6">
               <Sparkles className="w-4 h-4 text-primary-600 dark:text-primary-400" />
-              <span className="text-sm font-semibold text-primary-700 dark:text-primary-400">AI-Powered Procurement Intelligence</span>
+              <span className="text-sm font-semibold text-primary-700 dark:text-primary-400">
+                AI-Powered Smart Mandi Intelligence · SIH26032
+              </span>
             </div>
             <h1 className="text-4xl lg:text-6xl font-display font-extrabold text-ink-900 dark:text-white leading-[1.1] tracking-tight text-balance">
-              Smart Procurement. <br />
-              Less Waiting. <span className="gradient-text">Better Planning.</span>
+              Smart Mandi Queue. <br />
+              Zero Waiting. <span className="gradient-text">Predictive Procurement.</span>
             </h1>
             <p className="mt-6 text-lg text-ink-600 dark:text-ink-400 leading-relaxed max-w-xl">
-              AI-powered procurement intelligence that helps farmers choose the right centre,
-              predict their turn and track their procurement and payment — all in real time.
+              FasalGo empowers farmers across APMC procurement centres with AI waiting time prediction,
+              smart centre recommendations, live digital token queues, and instant DBT payment tracking.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 to="/register"
                 className="inline-flex items-center gap-2 bg-primary-600 text-white font-semibold px-8 py-4 rounded-xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-600/25 hover:shadow-xl hover:shadow-primary-600/30 group"
               >
-                Plan My Visit
+                Book Mandi Slot
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -88,7 +93,7 @@ export default function Landing() {
                 className="inline-flex items-center gap-2 bg-white dark:bg-ink-800 text-ink-800 dark:text-ink-100 font-semibold px-8 py-4 rounded-xl border-2 border-ink-200 dark:border-ink-700 hover:border-primary-300 dark:hover:border-primary-700 transition-all"
               >
                 <Clock className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                See How It Works
+                Live Demo Portal
               </Link>
             </div>
 
@@ -105,103 +110,119 @@ export default function Landing() {
                 ))}
               </div>
               <div>
-                <p className="text-sm font-semibold text-ink-800 dark:text-ink-200">Trusted by 12,000+ farmers</p>
-                <p className="text-xs text-ink-500 dark:text-ink-400">across 45 procurement centres</p>
+                <p className="text-sm font-semibold text-ink-800 dark:text-ink-200">Integrated with Rajasthan APMC Network</p>
+                <p className="text-xs text-ink-500 dark:text-ink-400">Jaipur, Chomu, Dausa, Kishangarh & Bagru Mandis</p>
               </div>
             </div>
           </motion.div>
 
-          {/* Interactive Procurement Journey Visual */}
+          {/* Real Photo Showcase Card with Live Journey Overlay */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative card-elevated p-8 overflow-hidden pattern-field">
-              {/* Subtle background glow */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-primary-500/8 dark:bg-primary-500/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-teal-500/8 dark:bg-teal-500/10 rounded-full blur-3xl" />
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-ink-100 dark:border-ink-800 group">
+              <img
+                src="/images/farmer_hero_mandi.jpg"
+                alt="Empowered Farmer at APMC Mandi"
+                className="w-full h-80 lg:h-96 object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-              <div className="relative">
-                {/* Journey Title */}
-                <div className="flex items-center justify-between mb-6">
+              {/* Floating Real-time Live Badge */}
+              <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-900/90 text-white border border-emerald-500/50 backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span className="text-xs font-bold">LIVE MANDI WEBSOCKET ACTIVE</span>
+              </div>
+
+              {/* Bottom Card Overlay */}
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/90 dark:bg-ink-950/90 backdrop-blur-md border border-white/40 dark:border-ink-800 text-ink-900 dark:text-white shadow-xl">
+                <div className="flex items-center justify-between mb-2">
                   <div>
-                    <p className="text-xs font-bold text-ink-500 dark:text-ink-400 uppercase tracking-wider">The FasalGo Journey</p>
-                    <p className="text-sm font-semibold text-ink-700 dark:text-ink-300 mt-0.5">From farm to payment — one connected flow</p>
+                    <p className="text-xs text-ink-500 dark:text-ink-400 font-bold uppercase">Active Procurement</p>
+                    <p className="font-display font-bold text-sm lg:text-base">Jaipur APMC (Muhana Mandi Yard)</p>
                   </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-900">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
-                    <span className="text-[10px] font-bold text-teal-700 dark:text-teal-400">LIVE</span>
+                  <div className="text-right">
+                    <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold">RMS 2024–25 MSP</p>
+                    <p className="font-display font-extrabold text-lg text-emerald-600 dark:text-emerald-400">₹2,275/Qtl</p>
                   </div>
                 </div>
 
-                {/* Journey Steps with connecting line */}
-                <div className="relative">
-                  {/* Vertical connecting line */}
-                  <div className="absolute left-6 top-6 bottom-6 w-0.5 bg-gradient-to-b from-primary-300 via-teal-300 to-success-300 dark:from-primary-800 dark:via-teal-800 dark:to-success-800" />
-
-                  {journeySteps.map((step, i) => {
-                    const Icon = step.icon;
-                    return (
-                      <motion.div
-                        key={step.label}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4 + i * 0.12 }}
-                        className="relative flex items-center gap-4 mb-4 last:mb-0"
-                      >
-                        {/* Step circle */}
-                        <div className="relative z-10">
-                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg`}>
-                            <Icon className="w-6 h-6 text-white" />
-                          </div>
-                        </div>
-                        {/* Step info */}
-                        <div className="flex-1 flex items-center justify-between">
-                          <div>
-                            <p className="font-semibold text-ink-900 dark:text-ink-100 text-sm">{step.label}</p>
-                            <p className="text-xs text-ink-500 dark:text-ink-400">{step.sub}</p>
-                          </div>
-                          {i === 3 && (
-                            <motion.div
-                              animate={{ scale: [1, 1.15, 1] }}
-                              transition={{ duration: 2, repeat: Infinity }}
-                              className="text-xs font-bold text-accent-600 dark:text-accent-400 bg-accent-50 dark:bg-accent-950/40 px-2 py-1 rounded-full border border-accent-200 dark:border-accent-900"
-                            >
-                              31 min ETA
-                            </motion.div>
-                          )}
-                          {i === 5 && (
-                            <div className="text-xs font-bold text-success-600 dark:text-success-400 bg-success-50 dark:bg-success-950/40 px-2 py-1 rounded-full border border-success-200 dark:border-success-900">
-                              ₹42,500
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* AI confidence indicator */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                  className="absolute -top-2 -right-2 bg-white dark:bg-ink-800 rounded-xl shadow-lg p-3 border border-ink-100 dark:border-ink-700 hidden sm:block"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg bg-teal-100 dark:bg-teal-950/40 flex items-center justify-center">
-                      <Zap className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-bold text-ink-900 dark:text-ink-100">AI Prediction</p>
-                      <p className="text-[9px] text-ink-500 dark:text-ink-400">89% confidence</p>
-                    </div>
+                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-ink-200/60 dark:border-ink-800 text-center">
+                  <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40">
+                    <p className="text-[10px] text-ink-500 dark:text-ink-400">Token</p>
+                    <p className="font-bold text-sm text-emerald-700 dark:text-emerald-400">#47</p>
                   </div>
-                </motion.div>
+                  <div className="p-1.5 rounded-lg bg-teal-50 dark:bg-teal-950/40">
+                    <p className="text-[10px] text-ink-500 dark:text-ink-400">Wait ETA</p>
+                    <p className="font-bold text-sm text-teal-700 dark:text-teal-400">18 min</p>
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40">
+                    <p className="text-[10px] text-ink-500 dark:text-ink-400">Moisture</p>
+                    <p className="font-bold text-sm text-amber-700 dark:text-amber-400">11.2% (Grade A)</p>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Real Mandi Infrastructure Showcase Gallery */}
+      <section className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl lg:text-4xl font-display font-bold text-ink-900 dark:text-white">
+            Ground-Truth Mandi Operations
+          </h2>
+          <p className="mt-3 text-ink-500 dark:text-ink-400 max-w-2xl mx-auto">
+            From gate weighbridge check-in to digital moisture analysis — precision engineering for Indian agriculture.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Card 1: Electronic Weighbridge */}
+          <div className="rounded-3xl overflow-hidden card-surface border border-ink-100 dark:border-ink-800 shadow-xl group">
+            <div className="relative h-64 overflow-hidden">
+              <img
+                src="/images/mandi_weighbridge_yard.jpg"
+                alt="Electronic Weighbridge Terminal"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 text-white">
+                <span className="px-2.5 py-1 rounded-md bg-emerald-600 text-xs font-bold">Counter Throughput</span>
+                <h3 className="text-xl font-bold font-display mt-1">Digital Weighbridge Integration</h3>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-ink-600 dark:text-ink-400 leading-relaxed">
+                Live counter tracking monitors electronic weighbridge transit speeds in real time, detecting anomalies and bottlenecks before queues form.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 2: Quality & Assay Lab */}
+          <div className="rounded-3xl overflow-hidden card-surface border border-ink-100 dark:border-ink-800 shadow-xl group">
+            <div className="relative h-64 overflow-hidden">
+              <img
+                src="/images/mandi_quality_lab.jpg"
+                alt="Moisture Testing Quality Lab"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 text-white">
+                <span className="px-2.5 py-1 rounded-md bg-teal-600 text-xs font-bold">Quality Assay</span>
+                <h3 className="text-xl font-bold font-display mt-1">Digital Moisture & Grading</h3>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-ink-600 dark:text-ink-400 leading-relaxed">
+                Automated certification of moisture content (&lt;12% optimal for Wheat & Mustard) ensures fair MSP valuation and instant DBT payment clearance.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -244,70 +265,39 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Key Features */}
-      <section className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-3 gap-6">
-          {[
-            { icon: Clock, title: 'AI Wait-Time Prediction', desc: 'Get accurate waiting time estimates with confidence scores, updated in real time as queue conditions change.' },
-            { icon: MapPin, title: 'Smart Centre Recommendation', desc: 'Not just the nearest centre — AI considers distance, queue, counters, capacity, and congestion to find your best option.' },
-            { icon: Route, title: 'Dynamic Re-routing', desc: 'If congestion spikes, the app automatically suggests a better alternative centre with lower wait time.' },
-            { icon: Mic, title: 'Voice-First Assistant', desc: 'Ask in your language — Hindi or English. Get answers about your token, centre, procurement, and payment.' },
-            { icon: TrendingUp, title: 'Congestion Forecast', desc: 'See predicted crowd levels for the next 5 hours so you can plan the best time to visit.' },
-            { icon: ShieldCheck, title: 'Full Procurement Tracking', desc: 'From booking to payment — track every stage of your procurement with live status updates.' },
-          ].map((feat, i) => {
-            const Icon = feat.icon;
-            return (
-              <motion.div
-                key={feat.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="card-surface p-6"
-              >
-                <div className="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-950/40 flex items-center justify-center mb-4">
-                  <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                </div>
-                <h3 className="font-display font-bold text-ink-900 dark:text-ink-100 mb-2">{feat.title}</h3>
-                <p className="text-sm text-ink-500 dark:text-ink-400 leading-relaxed">{feat.desc}</p>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 py-16 pb-24">
-        <div className="rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-900 to-green-900 p-12 text-center relative overflow-hidden pattern-contour shadow-2xl">
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"
+        <div className="rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-900 to-green-900 p-12 text-center relative overflow-hidden shadow-2xl">
+          <img
+            src="/images/mandi_weighbridge_yard.jpg"
+            alt="Mandi Background"
+            className="absolute inset-0 w-full h-full object-cover opacity-15"
           />
           <div className="relative z-10">
             <h2 className="text-3xl lg:text-4xl font-display font-bold text-white mb-4">
               Ready to experience smart procurement?
             </h2>
-            <p className="text-emerald-100/90 mb-8 max-w-xl mx-auto text-base sm:text-lg">
-              Join thousands of farmers who save time with AI-powered queue intelligence.
+            <p className="text-emerald-100 max-w-xl mx-auto mb-8 text-base">
+              Join thousands of farmers cutting waiting times and managing APMC procurement with FasalGo AI.
             </p>
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-2 bg-white text-emerald-900 font-bold px-8 py-4 rounded-xl hover:bg-emerald-50 transition-all shadow-lg group"
-            >
-              Get Started Free
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 bg-white text-emerald-900 font-bold px-8 py-4 rounded-xl hover:bg-emerald-50 transition-all shadow-lg hover:shadow-xl"
+              >
+                Get Started Free
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-2 bg-emerald-800/80 text-white font-semibold px-8 py-4 rounded-xl border border-emerald-600/50 hover:bg-emerald-800 transition-all"
+              >
+                Admin Command Center
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-
-      <footer className="border-t border-ink-100 dark:border-ink-800 py-8">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Logo size="sm" showText />
-          <p className="text-sm text-ink-500 dark:text-ink-400">SIH26032 — AI-Powered Smart Procurement & Queue Intelligence</p>
-        </div>
-      </footer>
     </div>
   );
 }

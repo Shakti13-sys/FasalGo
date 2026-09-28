@@ -1,19 +1,36 @@
 import type { ProcurementCentre, CongestionLevel } from '@/types';
-import { mockCentres } from '@/data/mockData';
+import { apiFetch } from './api';
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export async function getCentres(
+  lat: number = 19.9975,
+  lon: number = 73.7898,
+  search?: string
+): Promise<ProcurementCentre[]> {
+  const params = new URLSearchParams();
+  params.set('lat', lat.toString());
+  params.set('lon', lon.toString());
+  if (search) params.set('search', search);
 
-export async function getCentres(): Promise<ProcurementCentre[]> {
-  await delay(600);
-  return mockCentres;
+  return await apiFetch<ProcurementCentre[]>(`/centres?${params.toString()}`);
 }
 
-export async function getCentreById(id: string): Promise<ProcurementCentre | undefined> {
-  await delay(300);
-  return mockCentres.find((c) => c.id === id);
+export async function getCentreById(
+  id: string,
+  lat: number = 19.9975,
+  lon: number = 73.7898
+): Promise<ProcurementCentre | undefined> {
+  try {
+    return await apiFetch<ProcurementCentre>(`/centres/${id}?lat=${lat}&lon=${lon}`);
+  } catch {
+    return undefined;
+  }
 }
 
-export async function getCentresByCongestion(level: CongestionLevel): Promise<ProcurementCentre[]> {
-  await delay(400);
-  return mockCentres.filter((c) => c.congestion === level);
+export async function getCentresByCongestion(
+  level: CongestionLevel,
+  lat: number = 19.9975,
+  lon: number = 73.7898
+): Promise<ProcurementCentre[]> {
+  const centres = await getCentres(lat, lon);
+  return centres.filter((c) => c.congestion === level);
 }
